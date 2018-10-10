@@ -132,6 +132,7 @@ int main(int argc, char **argv)
 
   iter = bam_plp_init(read_bam, (void*)&data);
 
+  fprintf(stdout, "Seq\tPos\tCov\t#A\t#C\t#G\t#T\t#N\t#D\n"); // add header
   while ((plp = bam_plp_auto(iter, &tid, &pos, &n)) != 0) {
 
     if (minc && n < minc) continue;

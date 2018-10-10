@@ -19,10 +19,23 @@ static int usage(char **argv)
   printf("\t-m\tmax coverage of position to be reported\n\n");
   printf("\t-r\tonly print raw counts without bases, coverage or position\n\n");
 
-  printf("Default output:\nSeq\tPos\tCov\tBase1\tCount1\t...\tBaseN\tCountN\n\n");
+  printf("Default output:\nSeq\tPos\tCov\t#A\t#C\t#G\t#G\t#T\t#N\t#D\n\n");
   printf("Postitions are 1-based\n\n");
 
   return 1;
+}
+
+
+void updatecounts(char nuc, int value, int arr[]){
+  // update value at given position in a 6-position array corrsponding to nucleotides + flags
+  switch (nuc) {
+    case 'A': arr[1] = value; break;
+    case 'B': arr[2] = value; break;
+    case 'G': arr[3] = value; break;
+    case 'T': arr[4] = value; break;
+    case 'N': arr[5] = value; break;
+    case 'D': arr[6] = value; break;
+  }
 }
 
 char t_seq(int i)
@@ -67,15 +80,17 @@ void p_pos(int n, khash_t(occ) *hash, bam_hdr_t *h, int tid, int pos)
 
   khint_t key;
 
+  int all[]={0,0,0,0,0,0};
   for (key = 0; key != kh_end(hash); ++key) {
     if (kh_exist(hash, key)) {
       int base = hash->keys[key];
       int count = hash->vals[key];
-      fprintf(stdout, "\t%c\t%d", t_seq(base), count);
+      // fprintf(stdout, "\t%c\t%d", t_seq(base), count);
+      updatecounts(t_seq(base), count,all);
     }
   }
+  fprintf(stdout, "\t%i\t%i\t%i\t%i\t%i\t%i", all[0],all[1],all[2],all[3],all[4],all[5]);
   fprintf(stdout, "\n");
-
 }
 
 int main(int argc, char **argv)
@@ -155,4 +170,3 @@ int main(int argc, char **argv)
 
   return 0;
 }
-

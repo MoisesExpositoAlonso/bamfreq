@@ -13,6 +13,7 @@ static int usage(char **argv)
   printf("Options:\n");
 
   printf("\t-h\tonly print heterozygous positions\n");
+  printf("\t-a\tonly print natural bases ACTG\n");
   printf("\t-f\tmin fraction of read support\n");
   printf("\t-q\tmin map quality\n");
   printf("\t-c\tmin coverage of position to be reported\n");
@@ -29,12 +30,12 @@ static int usage(char **argv)
 void updatecounts(char nuc, int value, int arr[]){
   // update value at given position in a 6-position array corrsponding to nucleotides + flags
   switch (nuc) {
-    case 'A': arr[1] = value; break;
-    case 'B': arr[2] = value; break;
-    case 'G': arr[3] = value; break;
-    case 'T': arr[4] = value; break;
-    case 'N': arr[5] = value; break;
-    case 'D': arr[6] = value; break;
+    case 'A': arr[0] = value; break;
+    case 'C': arr[1] = value; break;
+    case 'G': arr[2] = value; break;
+    case 'T': arr[3] = value; break;
+    case 'N': arr[4] = value; break;
+    case 'D': arr[5] = value; break;
   }
 }
 
@@ -98,6 +99,7 @@ int main(int argc, char **argv)
 
   float minfrac = 0.0;
   int het = 0;
+  int nat = 1;
   int minc = 0;
   int maxc = 0;
   int raw = 0;
@@ -146,6 +148,13 @@ int main(int argc, char **argv)
     if (minfrac) {
       for (key = 0; key != kh_end(hash); ++key) {
         if (kh_exist(hash, key) && kh_val(hash, key) < (int)(minfrac * n)) {
+          kh_del(occ, hash, key);
+        }
+      }
+    }
+    if (nat) {
+      for (key = 0; key != kh_end(hash); ++key) {
+        if (kh_exist(hash, key) && (hash->keys[key] == 15 || hash->keys[key] == 32 ) ) {
           kh_del(occ, hash, key);
         }
       }

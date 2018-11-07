@@ -24,3 +24,24 @@ make submodules
 make
 #+END_SRC
 
+# Info
+
+Run ./freq to prompt help
+
+#+BEGIN_SRC bash
+
+Usage: freq [options] file.bam
+
+Options:
+	-h	only print heterozygous positions
+	-a	only print natural bases ACTG
+	-f	min fraction of read support
+	-q	min map quality
+	-c	min coverage of position to be reported
+	-m	max coverage of position to be reported
+	-r	only print raw counts without bases, coverage or position
+
+Default output:
+Seq	Pos	Cov	#A	#C	#G	#G	#T	#N	#D
+
+#+END_SRC

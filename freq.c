@@ -20,7 +20,7 @@ static int usage(char **argv)
   printf("\t-m\tmax coverage of position to be reported\n\n");
   printf("\t-r\tonly print raw counts without bases, coverage or position\n\n");
 
-  printf("Default output:\nSeq\tPos\tCov\t#A\t#C\t#G\t#G\t#T\t#N\t#D\n\n");
+  printf("Default output:\nSeq\tPos\tCov\t#A\t#C\t#G\t#T\t#N\t#D\n\n");
   printf("Postitions are 1-based\n\n");
 
   return 1;
